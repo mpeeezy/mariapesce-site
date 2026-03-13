@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maria Pesce</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23AAFF00'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FDFCFA;
+  --ink: #1A1A1A;
+  --electric: #3B5BFF;
+  --hot: #FF3366;
+  --lime: #AAFF00;
+  --peach: #FFB088;
+  --cloud: #F0EDE8;
+  --muted: #A09890;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--ink); font-family:'DM Sans',sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+::selection { background:var(--lime); color:var(--ink); }
+img { display:block; }
+a { color:inherit; }
+
+.page { max-width:1140px; margin:0 auto; padding:28px 32px; }
+
+/* Browser bar */
+.bb { background:var(--cloud); border-radius:12px 12px 0 0; padding:10px 14px; display:flex; align-items:center; gap:10px; border:1px solid rgba(0,0,0,.06); border-bottom:none; }
+.bb-dots { display:flex; gap:5px; }
+.bb-dots span { width:9px; height:9px; border-radius:50%; }
+.bb-dots span:nth-child(1){background:var(--hot)} .bb-dots span:nth-child(2){background:#FFD60A} .bb-dots span:nth-child(3){background:#34C759}
+.bb-url { flex:1; background:#fff; border-radius:6px; padding:5px 12px; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); }
+.bb-url b { color:var(--ink); }
+.btc-pill { background:var(--ink); color:var(--lime); font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; padding:5px 10px; border-radius:6px; white-space:nowrap; display:flex; align-items:center; gap:5px; }
+.btc-pill .btc-dot { width:6px; height:6px; border-radius:50%; background:var(--lime); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* Window */
+.win { border:1px solid rgba(0,0,0,.06); border-top:none; border-radius:0 0 12px 12px; background:#fff; padding:32px; }
+
+/* Nav */
+.nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; }
+.nav-left { display:flex; gap:5px; flex-wrap:wrap; }
+.badge { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:5px 12px; border-radius:6px; cursor:default; transition:transform .2s; }
+.badge:hover { transform:rotate(-2deg) scale(1.05); }
+.badge--b { background:var(--electric); color:#fff; } .badge--h { background:var(--hot); color:#fff; }
+.badge--l { background:var(--lime); color:var(--ink); } .badge--p { background:var(--peach); color:var(--ink); }
+.nav-right { display:flex; gap:16px; }
+.nav-right a { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .2s; }
+.nav-right a:hover { color:var(--ink); }
+
+/* Hero */
+.hero { margin-bottom:24px; }
+.hero h1 { font-family:'DM Sans',sans-serif; font-size:clamp(44px,7vw,80px); font-weight:700; line-height:.95; letter-spacing:-2px; }
+.hero .hl { position:relative; display:inline-block; }
+.hero .hl::after { content:''; position:absolute; bottom:4px; left:-4px; right:-4px; height:12px; background:var(--lime); opacity:.5; z-index:-1; transform:rotate(-.5deg); }
+.tagline { font-family:'Instrument Serif',serif; font-size:18px; font-style:italic; color:var(--muted); margin-top:8px; }
+
+/* Ticker */
+.ticker { background:var(--ink); color:var(--lime); font-family:'Space Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; padding:8px 0; overflow:hidden; border-radius:8px; margin-bottom:24px; }
+.ticker-t { display:flex; width:max-content; animation:tick 12s linear infinite; }
+.ticker-t:hover { animation-play-state:paused; }
+@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.ticker-i { padding:0 20px; white-space:nowrap; }
+.ticker-i .btc { display:inline-block; margin:0 6px; }
+
+/* ======== BENTO GRID ======== */
+.bento { display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:minmax(150px,auto); gap:10px; margin-bottom:24px; }
+
+/* Project card */
+.bc { border-radius:12px; overflow:hidden; cursor:pointer; transition:transform .4s var(--ease), box-shadow .3s; position:relative; display:flex; flex-direction:column; justify-content:flex-end; background:var(--cloud); }
+.bc:hover { transform:translateY(-4px) scale(1.01); box-shadow:0 16px 40px rgba(0,0,0,.1); z-index:2; }
+.bc--2x { grid-column:span 2; } .bc--2h { grid-row:span 2; }
+.bc-img { position:absolute; inset:0; background-size:cover; background-position:center; transition:transform .6s var(--ease); z-index:0; }
+.bc:hover .bc-img { transform:scale(1.04); }
+.bc-ov { position:absolute; inset:0; z-index:1; background:linear-gradient(to top,rgba(0,0,0,.6) 0%,rgba(0,0,0,.08) 50%,transparent 100%); }
+.bc-info { position:relative; z-index:2; padding:16px; color:#fff; }
+.bc-brand { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:2px; text-transform:uppercase; opacity:.7; margin-bottom:3px; }
+.bc-name { font-family:'DM Sans',sans-serif; font-size:17px; font-weight:600; line-height:1.2; }
+.bc--2x .bc-name { font-size:22px; }
+.bc-new { position:absolute; top:10px; right:10px; z-index:3; font-family:'Space Mono',monospace; font-size:7px; letter-spacing:1.5px; text-transform:uppercase; background:var(--hot); color:#fff; padding:3px 8px; border-radius:4px; }
+
+/* About card */
+.bc--about { background:var(--bg); border:1px dashed rgba(0,0,0,.1); padding:24px; cursor:default; display:flex; flex-direction:column; justify-content:center; }
+.bc--about .bc-info { color:var(--ink); padding:0; }
+.bc--about .abl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:var(--electric); margin-bottom:10px; }
+.bc--about .abt { font-size:14px; line-height:1.65; color:#555; }
+.bc--about .abt strong { color:var(--ink); font-weight:600; }
+
+/* Photo card */
+.bc--photo { cursor:default; }
+.bc--photo .bc-img { background-size:cover; background-position:center top; }
+
+/* Culture photo card */
+.bc--culture { cursor:default; min-height:160px; }
+
+/* ======== PRESS STRIP ======== */
+.press { margin-bottom:24px; padding:20px 0; border-top:1px solid var(--cloud); border-bottom:1px solid var(--cloud); }
+.press-label { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:3px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; text-align:center; }
+.press-row { display:flex; justify-content:center; gap:24px; flex-wrap:wrap; }
+.press-item { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); transition:color .2s; cursor:inherit; text-decoration:none; }
+.press-item:hover { color:var(--ink); }
+.press-item span { color:var(--electric); }
+
+/* ======== BTC GALLERY STRIP ======== */
+.gallery-strip { margin-bottom:24px; overflow-x:auto; overflow-y:hidden; border-radius:10px; scrollbar-width:none; }
+.gallery-strip::-webkit-scrollbar { display:none; }
+.gallery-wrap { position:relative; }
+.gallery-arrow { position:absolute; top:50%; transform:translateY(-50%); z-index:5; background:var(--ink); color:#fff; border:none; width:36px; height:36px; border-radius:50%; font-size:18px; cursor:pointer; opacity:.8; transition:opacity .2s; display:flex; align-items:center; justify-content:center; }
+.gallery-arrow:hover { opacity:1; }
+.gallery-arrow--l { left:8px; }
+.gallery-arrow--r { right:8px; }
+.gallery-label { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:4px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; text-align:center; }
+.gallery-track { display:flex; gap:8px; width:max-content; }
+@keyframes galleryScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.gallery-img { width:180px; height:140px; border-radius:8px; object-fit:cover; flex-shrink:0; transition:transform .3s var(--ease); cursor:default; }
+.gallery-img:hover { transform:scale(1.04); }
+
+/* ======== CONTACT ======== */
+.contact { text-align:center; margin-bottom:20px; }
+.contact h2 { font-family:'Instrument Serif',serif; font-size:32px; font-weight:400; font-style:italic; margin-bottom:8px; }
+.contact p { font-size:14px; color:var(--muted); margin-bottom:16px; }
+.contact-links { display:flex; gap:6px; justify-content:center; }
+.cl { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; padding:7px 14px; background:var(--cloud); border-radius:6px; text-decoration:none; color:var(--ink); transition:all .2s; }
+.cl:hover { background:var(--electric); color:#fff; }
+
+/* Bottom */
+.bottom { display:flex; justify-content:space-between; align-items:center; }
+.bottom span { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:1px; }
+
+/* ======== OVERLAY ======== */
+.ov { display:none; position:fixed; inset:0; z-index:200; background:rgba(253,252,250,.97); backdrop-filter:blur(20px); overflow-y:auto; padding:60px 32px 40px; }
+.ov.open { display:block; animation:fi .3s var(--ease); }
+@keyframes fi { from{opacity:0} to{opacity:1} }
+.ov-close { position:fixed; top:20px; right:28px; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; background:var(--cloud); border:none; padding:8px 18px; border-radius:6px; cursor:pointer; z-index:201; transition:all .2s; color:var(--ink); }
+.ov-close:hover { background:var(--ink); color:#fff; }
+.ov-inner { max-width:800px; margin:0 auto; }
+.ov-brand { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--electric); margin-bottom:8px; }
+.ov-title { font-family:'DM Sans',sans-serif; font-size:clamp(28px,4vw,44px); font-weight:700; margin-bottom:20px; letter-spacing:-1px; }
+.ov-hero { width:100%; border-radius:12px; overflow:hidden; margin-bottom:32px; background:var(--cloud); max-height:450px; }
+.ov-hero img { width:100%; height:100%; max-height:450px; object-fit:cover; display:block; }
+.ov-body h3 { font-family:'DM Sans',sans-serif; font-size:18px; font-weight:600; margin:28px 0 10px; }
+.ov-body p { font-size:15px; line-height:1.7; color:#555; margin-bottom:10px; }
+.ov-body .stat-row { display:flex; gap:16px; flex-wrap:wrap; margin:16px 0; }
+.ov-body .stat { background:var(--cloud); border-radius:10px; padding:16px 20px; flex:1; min-width:140px; text-align:center; }
+.ov-body .stat .num { font-family:'DM Sans',sans-serif; font-size:24px; font-weight:700; color:var(--ink); letter-spacing:-1px; }
+.ov-body .stat .lbl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+.tag-row { display:flex; gap:6px; flex-wrap:wrap; margin:12px 0; }
+.tag { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; border-radius:4px; background:var(--cloud); color:var(--muted); }
+.ov-video { width:100%; border-radius:12px; overflow:hidden; margin:24px 0; }
+.ov-video iframe { width:100%; aspect-ratio:16/9; border:0; border-radius:12px; display:block; }
+.ov-video video { width:100%; border-radius:12px; display:block; }
+.img-del-btn { position:absolute; top:8px; left:8px; background:#e33; color:#fff; border:none; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:5px 10px; border-radius:4px; cursor:pointer; z-index:10; opacity:0; transition:opacity .2s; pointer-events:none; }
+body.edit-mode .img-del-btn { opacity:1; pointer-events:auto; }
+.img-del-btn:hover { background:#b00; }
+.ov-gallery { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:24px 0; }
+.ov-gallery img { width:100%; border-radius:10px; height:250px; object-fit:cover; }
+
+/* Responsive */
+@media(max-width:900px) { .bento{grid-template-columns:repeat(2,1fr)} .bc--2x{grid-column:span 2} .nav{flex-direction:column;gap:10px;align-items:flex-start} .press-row{gap:12px} .ov-body .stat-row{flex-direction:column} }
+@media(max-width:550px) { .bento{grid-template-columns:1fr} .bc--2x{grid-column:span 1} .page{padding:16px} .win{padding:20px} .gallery-img{width:140px;height:110px} }
+
+/* ======== EDIT MODE ======== */
+.edit-toggle { position:fixed; bottom:30px; right:30px; z-index:9999; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; padding:12px 24px; border-radius:8px; border:none; cursor:pointer; transition:all .2s; background:var(--ink); color:#fff; box-shadow:0 4px 20px rgba(0,0,0,.3); }
+.edit-toggle:hover { background:var(--electric); }
+.edit-toggle.active { background:var(--hot); }
+body.edit-mode .ov-body [contenteditable] { outline:2px dashed var(--electric); outline-offset:4px; border-radius:4px; min-height:1em; }
+body.edit-mode .ov-body [contenteditable]:focus { outline:2px solid var(--electric); background:rgba(59,91,255,.04); }
+body.edit-mode .stat [contenteditable] { outline:1px dashed var(--electric); outline-offset:2px; }
+body.edit-mode .stat [contenteditable]:focus { outline:2px solid var(--electric); background:rgba(59,91,255,.04); }
+.img-edit-btn { position:absolute; top:8px; right:8px; background:var(--ink); color:#fff; border:none; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:5px 10px; border-radius:4px; cursor:pointer; z-index:10; opacity:0; transition:opacity .2s; pointer-events:none; }
+body.edit-mode .img-edit-btn { opacity:1; pointer-events:auto; }
+body.edit-mode .bc:hover .img-edit-btn { opacity:1; }
+.img-edit-btn:hover { background:var(--electric); }
+.edit-bar { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:300; display:none; gap:8px; align-items:center; background:#fff; padding:8px 16px; border-radius:10px; box-shadow:0 4px 24px rgba(0,0,0,.15); border:1px solid var(--cloud); }
+body.edit-mode .edit-bar { display:flex; }
+.edit-bar button { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:7px 14px; border-radius:6px; border:none; cursor:pointer; transition:all .2s; }
+.edit-bar .save-btn { background:var(--lime); color:var(--ink); font-weight:700; }
+.edit-bar .save-btn:hover { background:#9ef200; }
+.edit-bar .export-btn { background:var(--cloud); color:var(--ink); }
+.edit-bar .export-btn:hover { background:var(--electric); color:#fff; }
+.edit-bar .status { font-family:'Space Mono',monospace; font-size:9px; color:var(--muted); }
+.add-stat-btn, .remove-stat-btn { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:4px 8px; border-radius:4px; border:1px dashed var(--muted); background:transparent; color:var(--muted); cursor:pointer; margin:4px; display:none; }
+body.edit-mode .add-stat-btn, body.edit-mode .remove-stat-btn { display:inline-block; }
+.add-stat-btn:hover, .remove-stat-btn:hover { border-color:var(--electric); color:var(--electric); }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="bb">
+    <div class="bb-dots"><span></span><span></span><span></span></div>
+    <div class="bb-url"><b>mariapesce.com</b></div>
+    <div class="btc-pill"><span class="btc-dot"></span>BTC <span id="btc-price">...</span></div>
+  </div>
+  <div class="win">
+
+    <div class="nav">
+      <div class="nav-left">
+        <span class="badge badge--b">Brand</span>
+        <span class="badge badge--h">GTM</span>
+        <span class="badge badge--l">Culture</span>
+        <span class="badge badge--p">Content</span>
+      </div>
+      <div class="nav-right">
+        <a href="#about-section">About</a>
+        <a href="#vibes">Vibes</a>
+        <a href="#connect">Connect</a>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h1>Maria<br><span class="hl">Pesce</span></h1>
+      <div class="tagline">bringing bitcoin mainstream.</div>
+    </div>
+
+    <div class="ticker">
+      <div class="ticker-t">
+        <span class="ticker-i">Marketing the Future</span>
+        <span class="ticker-i">Marketing the Future</span>
+        <span class="ticker-i">Marketing the Future</span>
+        <span class="ticker-i">Marketing the Future</span>
+        <span class="ticker-i">Marketing the Future</span>
+        <span class="ticker-i">Marketing the Future</span>
+        <span class="ticker-i">Marketing the Future</span>
+        <span class="ticker-i">Marketing the Future</span>
+      </div>
+    </div>
+
+    <!-- BENTO -->
+    <div class="bento" id="bento-grid"></div>
+
+    <!-- BTC GALLERY -->
+    <div id="vibes">
+      <div class="ticker" style="margin-bottom:16px">
+        <div class="ticker-t">
+          <span class="ticker-i">The World of Bitcoin</span>
+          <span class="ticker-i">The World of Bitcoin</span>
+          <span class="ticker-i">The World of Bitcoin</span>
+          <span class="ticker-i">The World of Bitcoin</span>
+          <span class="ticker-i">The World of Bitcoin</span>
+          <span class="ticker-i">The World of Bitcoin</span>
+          <span class="ticker-i">The World of Bitcoin</span>
+          <span class="ticker-i">The World of Bitcoin</span>
+        </div>
+      </div>
+      <div class="gallery-wrap">
+        <button class="gallery-arrow gallery-arrow--l" onclick="scrollGallery(-1)">&#8249;</button>
+        <div class="gallery-strip" id="galleryStrip">
+          <div class="gallery-track" id="galleryTrack"></div>
+        </div>
+        <button class="gallery-arrow gallery-arrow--r" onclick="scrollGallery(1)">&#8250;</button>
+      </div>
+    </div>
+
+    <!-- PRESS -->
+    <div class="press" id="press">
+      <div class="press-label">Featured In</div>
+      <div class="press-row">
+        <span class="press-item">Forbes</span>
+        <span class="press-item">Wall Street Journal</span>
+        <span class="press-item">Fortune</span>
+        <span class="press-item">TechCrunch</span>
+        <span class="press-item">Fast Company</span>
+        <span class="press-item">Bitcoin Magazine</span>
+        <span class="press-item">Yahoo Finance</span>
+        <span class="press-item">The Drum</span>
+        <span class="press-item">Rolling Out</span>
+        <span class="press-item">Page Six</span>
+        <span class="press-item">Cointelegraph</span>
+        <span class="press-item">Print Mag</span>
+        <span class="press-item">Awwwards</span>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact" id="connect">
+      <h2>Let's talk.</h2>
+      <div class="contact-links">
+        <a href="mailto:mcpesce1@gmail.com" class="cl">Email</a>
+        <a href="https://linkedin.com/in/mariapesce" class="cl" target="_blank">LinkedIn</a>
+        <a href="https://x.com/MariaPesce_" class="cl" target="_blank">Twitter</a>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <span>&copy; 2026 Maria Pesce</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Overlay -->
+<div class="ov" id="ov">
+  <button class="ov-close" id="ovClose">Close &times;</button>
+  <div class="ov-inner" id="ovInner"></div>
+</div>
+
+<script>
+const S = 'https://images.squarespace-cdn.com/content/v1/65c50212f7fdc3781b7ec9d5/';
+
+const galleryImgs = [
+  S+'06641932-1fa1-456d-8bce-cd37ef783d1d/IMG_0429.JPG',
+  S+'1ec4eb74-00a6-4b42-9060-186cbb72556d/BFA_38008_5293461.JPG',
+  S+'1ff80e66-03e4-4028-9313-fe50497693f7/16374cc6-dba5-4f39-91af-f336cbf4c7f7+copy.jpg',
+  S+'26826b93-4a08-4318-a214-7c491dff10ca/IMG_0456.JPG',
+  S+'48c53128-5387-4c58-8607-6d4c23aa9c0c/GIyKuoBWQAEPiez.jpg',
+  S+'4d31eadb-a696-42da-a98e-4d39460fdce2/IMG_6618.PNG',
+  S+'516372a3-1bba-4fd9-a763-35f99d07561c/IMG_9678.JPG',
+  S+'562aeb26-ca3b-42e4-a02e-3edba26eb0f3/1707763289771.jpg',
+  S+'5db20546-d226-4432-9c08-2499fc3f0a09/IMG_0458.JPG',
+  S+'5df84d69-bac5-40b3-9568-618893afd244/IMG_9811.JPG',
+  S+'655ebf8a-9ef0-48c7-b0a4-88580c05703d/IMG_0424.JPG',
+  S+'66ed3501-f8db-4e1d-a014-7d11c02e69e3/IMG_0371.JPG',
+  S+'6c9ec8ed-6f80-4e4f-b626-bf0061f9d95d/IMG_2594.JPG',
+  S+'7048106f-9f09-4c95-af49-c8798e9868a8/IMG_0428.JPG',
+  S+'78d7c9de-4f13-4288-800e-57d7f1071c24/IMG_0430.jpg',
+  S+'7c347aa5-ff7d-48a0-83ff-09b649d5e6c5/IMG_0425.JPG',
+  S+'82950fa7-7fed-4393-9bf4-9e7911fe3930/IMG_0435.JPG',
+  S+'85bedac5-54fd-4122-921e-9f9f46a87f99/IMG_5817.jpg',
+  S+'8f0ac514-ef82-494c-8349-e4c4bbfdb3d4/IMG_0426.JPG',
+  S+'90fe78ad-abd1-4529-b2ed-77aa2b7e1683/IMG_0434.JPG',
+  S+'9711fcdc-152d-48eb-99ed-836b810093f4/IMG_0443.JPG',
+  S+'9d16b049-76dc-4717-90cb-b02b3151b9e4/IMG_0440.JPG',
+  S+'a358caaa-daf3-4cac-956e-40cc1d6cd94f/IMG_0432.JPG',
+  S+'a515d4a5-3d81-447b-a2fe-584ac6393334/IMG_0451.jpg',
+  S+'ad418b6b-f27f-4c05-ac41-bde810c8c233/IMG_0454.JPG',
+  S+'bab37fcf-4787-4d4c-992b-13f859134210/IMG_0439.JPG',
+  S+'be1f4970-fa94-4b23-bd0c-600a46c64a46/IMG_0444.JPG',
+  S+'d9d781a1-71b9-444f-a0b8-79607f0444ff/IMG_4883.JPG',
+  S+'dc23587c-7d8d-4216-84d3-fc6afaad0cb5/IMG_0437.JPG',
+  S+'f25c5f59-f491-429e-a42a-1bc4288b0a4c/IMG_0441.JPG',
+  S+'f8278b35-440e-4f27-b39e-a0637fb6ed34/IMG_0438.JPG',
+  S+'fdb4db7e-5f55-4396-ad92-fdf77e13356f/IMG_0450.JPG',
+];
+
+const projects = [
+  { type:'photo', img:'assets/headshot.jpg' },
+  { type:'about' },
+  { id:'bem', brand:"Block", name:"Bitcoin Is Everyday Money", img:'assets/uploads/image--5--95166e.png', size:'2x', isNew:true, detail:{
+    heroImg:'assets/uploads/image--5-.png',
+    brief:"Block\u2019s first bitcoin policy campaign, launched in Washington, D.C. and timed to key legislative moments. The campaign advocates for a de minimis tax exemption that would exempt everyday bitcoin transactions under $600 from capital gains taxation, unlocking bitcoin\u2019s potential as a true peer-to-peer payment method.",
+    approach:"The campaign blanketed DC with OOH across billboards, bus shelters, metro wraps, and a branded moving truck. Partnered with Compass Coffee for storefront takeovers, branded coffee sleeves, and in-store bitcoin giveaways via Cash App. A dedicated website at btcismoney.xyz lets Americans directly contact their members of Congress in support of reform. Creative used bold, accessible language to make the case that paying with bitcoin shouldn\u2019t cost you more.",
+    impact:'',
+    stats:[{"num": "~16M", "lbl": "Social Reach"}, {"num": "70K+", "lbl": "Website Visits"}, {"num": "50+", "lbl": "OOH Placements"}, {"num": "9.5M+", "lbl": "Impressions"}],
+    tags:["Policy", "ECOSYSTEM", "EXPERIENTIAL", "OOH"],
+    gallery:['assets/uploads/block-takeover-1201-half.png','assets/bem/truck-crowd.jpg','assets/uploads/jay_6574.jpg','assets/bem/counter-exchange.jpg']
+  }},
+  { id:'sq-btc', brand:"Square", name:"Square Bitcoin", img:'assets/uploads/image-copy-e76476.png', size:'2x', isNew:true, detail:{
+    heroImg:'assets/uploads/image-copy.png',
+    brief:"We believe hard working entrepreneurs deserve access to the full power of bitcoin. We\u2019re bringing the power of bitcoin to every kind of business, from the corner caf\u00e9 to the neighborhood contractor.",
+    approach:"Sellers can now accept bitcoin payments or automatically convert a portion of daily sales into BTC, building long-term value while managing everyday cash flow. It\u2019s the first complete bitcoin solution built for local businesses. A smarter, faster, lower-cost way to manage money, and a powerful hedge against inflation that respects the value of seller's time and energy. Full GTM across email, social, web, partnerships, and in-product education.",
+    impact:'',
+    video:'https://www.youtube.com/embed/r6kEoQPGRoc?rel=0',
+    stats:[{"num": "49.7%", "lbl": "Email Open Rate"}, {"num": "827M", "lbl": "Social Reach"}, {"num": "10K+", "lbl": "BTC Sellers"}],
+    tags:["GTM", "B2B", "HARDWARE", "RELEASES"],
+    gallery:['assets/square/btc-payments-ui.png','assets/uploads/btcpayments-1-37c99a.png','assets/uploads/g3u419jw8aadpqn-3f64d8.jpg','assets/uploads/screenshot-2026-03-12-at-2.22.59-pm.png']
+  }},
+  { id:'btc2', brand:"Cash App", name:"Bitcoin 2.0", img:'assets/btc2/hero.png', size:'2x', isNew:true, detail:{
+    heroImg:'assets/btc2/hero.png',
+    brief:"A full product and marketing overhaul of Cash App\u2019s bitcoin experience, redesigned buying flow, new education modules, and a comprehensive GTM strategy to re-engage lapsed bitcoin users and acquire new ones.",
+    approach:"Cross-functional GTM spanning product marketing, lifecycle, social, creator, web, and paid. Launched with a phased rollout: awareness (creator + social), consideration (web + lifecycle), conversion (in-app + paid). New bitcoin buying experience with simplified UI and educational onboarding.",
+    impact:'',
+    stats:[{"num": "393M", "lbl": "Impressions"}, {"num": "64%", "lbl": "Positive Sentiment"}, {"num": "~2.9K", "lbl": "Brand Mentions"}],
+    tags:["GTM", "FEES", "PAID", "SOCIAL", "UGC"],
+    gallery:['assets/btc2/blimp.png','assets/btc2/purchase.png','assets/btc2/bitcoin-map.png','assets/btc2/shopping-bag.png','assets/btc2/backpack.png','assets/btc2/receipt-matcha.png']
+  }},
+  { id:'releases', brand:"Cash App", name:"Releases", img:'assets/uploads/g5o0bh3x0aaf2ux.jpg', isNew:true, detail:{
+    heroImg:'assets/uploads/g5o0bh3x0aaf2ux-98f008.jpg',
+    brief:"Seventeen years ago, Satoshi Nakamoto introduced bitcoin as \"a peer-to-peer electronic cash system.\" Cash App is now bringing that vision full circle, making bitcoin usable as everyday money. With Bitcoin Map, Bitcoin Payments with USD, and Stablecoins, we\u2019re connecting 58M+ customers to a global, open payment network. Spend locally, send globally, and move money instantly, all from a single balance.",
+    approach:"Launched major new bitcoin features: Bitcoin Map, Bitcoin Payments with USD, and Stablecoins, and repositioned bitcoin from something you simply hold to something you use. Introduced new Cash App Bitcoin positioning centered on bitcoin-first credibility, optional stables as global rails, 1:1 backing, and fee-free stacking tools like Auto Invest. Created a scalable release comms system spanning social, web, lifecycle, and press.",
+    impact:'',
+    video:'assets/releases/bitcoin-map-video.mp4',
+    stats:[{"num": "+18%", "lbl": "Web Traffic Lift"}, {"num": "25%", "lbl": "BTC Payments at SQ"}, {"num": "Largest", "lbl": "BTC Actives Spike"}],
+    tags:["GTM", "ECOSYSTEM", "RELEASES"],
+    gallery:['assets/releases/cash-releases-bitcoin.png','assets/uploads/edu_green_01.png']
+  }},
+  { id:'tortoise', brand:"Cash App", name:"Tortoise Card", img:S+'1740690327425-VSSIIWPP4FC3SOPETJGZ/00-CardHero-01.png', size:'2x', detail:{
+    heroImg:'assets/uploads/00-cardhero-01.png',
+    brief:"Cash App launched a new signature Cash App Card called Tortoise in February 2025. Featuring a pearlescent black and brown tortoise shell pattern with gold detailing, no two cards are the same. In a world filled with plain, unimaginative debit cards, the Cash App Tortoise Card stands out as a true original.",
+    approach:"Money isn\u2019t what makes you interesting or important. Fresh ideas and originality are the currency of the next generation. This campaign used timeless style and aesthetics to rewrite the parameters of wealth, positioning Tortoise Card as the ultimate symbol of a rich, individual sense of style and identity. Orchestrated our most ambitious card campaign to date: a full-funnel, cross-functional launch with multi-platinum artist Shaboozey. The hero film follows Shaboozey\u2019s journey back in time, making a 1-of-1 purchase that symbolizes his rise to fame.",
+    impact:'',
+    video:'https://www.youtube.com/embed/Zp6xAB0CvqM?rel=0',
+    stats:[{"num": "900K+", "lbl": "Card Orders"}, {"num": "572M+", "lbl": "MEDIA IMPRESSIONS"}],
+    tags:["GTM", "HARDWARE", "PARTNERSHIPS", "OOH"],
+    gallery:['assets/uploads/03-dooh-beastmock-03b.png','assets/uploads/00-campaignhero.png','assets/uploads/tortoise-7.png','assets/uploads/05-customizecard-stamps.png']
+  }},
+  { id:'bread', brand:"Cash App", name:"BREAD", img:S+'1711128217502-V6I2MRTLZAHT9Y51H4AM/Hero+Image.png', detail:{
+    heroImg:'assets/uploads/hero-image.png',
+    brief:"A free, limited-edition zine by Cash App that blends financial education with culture. BREAD\u2019s inaugural \"Bitcoin Issue\" helps readers see bitcoin in a new, more inclusive light. As part of our mission to make money more relatable and universally accessible.",
+    approach:"Recognizing that topics like bitcoin and financial education can be dry, intimidating, or exclusionary, we aimed to redefine financial literacy with BREAD, making it far more accessible and enjoyable. In collaboration with a Long Island City-based printer, we produced 5,000 limited-edition copies on high-quality paper with individual poster inserts plus a digital version for online readers.",
+    impact:'',
+    stats:[{"num": "<20min", "lbl": "Sold Out"}, {"num": "300K+", "lbl": "Web Visitors"}, {"num": "50.2M", "lbl": "Social Reach"}, {"num": "70%", "lbl": "Sell-Through Rate"}],
+    tags:["Brand", "ZINE", "Editorial", "Experiential"],
+    gallery:[S+'5d9e0105-b163-469f-ab66-a7d036c50b77/Press_Kit_Cover_Packshot.jpg',S+'163233b5-4c34-4434-8667-7365648c3735/Press_Kit_Gabbriette_Reading.jpg',S+'258986e8-4066-43fc-a823-f3305750ddf5/Press_Kit_Gabbriette_Chair.jpg',S+'30597acf-42e0-491c-b336-a3fffadbc67d/Press_Kit_Richard_Turley.jpg',S+'eb10d61c-3a92-4fce-a272-ac748a66c6fe/Press_Kit_Rolls.jpg',S+'0f92cb69-81ce-4af7-9a5d-6f1cd1c784c5/breadDisplay_+SSStudio3.jpg']
+  }},
+  { id:'everyday', brand:"Cash App", name:"Bitcoin Everyday", img:S+'1727116456506-A66HBN05P7L34QI36OV9/Lifecycle_02.png', detail:{
+    heroImg:'assets/uploads/lifecycle_02.png',
+    brief:"A bitcoin-forward product campaign highlighting Cash App\u2019s unique bitcoin value props for consumers. As the price of bitcoin appreciates, we seized this moment to speak to the masses. It\u2019s so easy to invest in bitcoin through your everyday spending habits, you can Bitcoin Everyday.",
+    approach:"Inspired by DIY, Bitcoin Everyday makes bitcoin feel easy and like something anyone can do with very simple instructions. Satisfying your bitcoin curiosity doesn\u2019t require learning how to code or burning your credit cards. It\u2019s as easy as paying for your coffee.",
+    impact:'',
+    stats:[{"num": "2.7M", "lbl": "Creator Reach"}, {"num": "+43%", "lbl": "New BTC Actives"}, {"num": "8.6%", "lbl": "Engagement Rate"}, {"num": "+45%", "lbl": "Organic Traffic"}],
+    tags:["GTM", "LIFECYLE", "SOCIAL", "Creator"],
+    gallery:[S+'37923a82-fdb0-484a-bfc9-1abe07ba1a8c/CA_01_Boba_Hero.gif',S+'233aa987-78f0-4d96-9b33-cbffaf7f405d/CA_02_Piggy_Hero-clean-ezgif.com-video-to-gif-converter.gif',S+'7922f32b-a78a-4267-bf43-97c9c0b16bc0/CA_03_Direct_Hero-clean-ezgif.com-video-to-gif-converter.gif',S+'01f71712-ad0d-4abb-b744-510e2f5c6c74/Lifecycle_02.png']
+  }},
+  { id:'market', brand:"Cash App", name:"Bitcoin Market", img:S+'1711125311440-KPY1ZMXMM8CXCYQRE5XU/BFA_39712_5597381+copy.jpg', detail:{
+    heroImg:'assets/uploads/bfa_39712_5597381-copy.jpg',
+    brief:"During Bitcoin 2023, we curated a market where anyone could buy products using bitcoin. We leveraged the excitement of the world\u2019s largest bitcoin conference to engage with the bitcoin-curious. Cash App demonstrated how easy it is to buy and use bitcoin, bringing it from convention halls to the streets of Miami.",
+    approach:"The market showcased how bitcoin is already being used as currency worldwide. Similar to historical forms of money, bitcoin functions as a unit of account, a medium of exchange, and a store of value. The Cash App Bitcoin Market transformed bitcoin from a theoretical concept into a tangible reality, with live vendor transactions powered by Cash App.",
+    impact:'',
+    stats:[{"num": "17M", "lbl": "Media Impressions"}, {"num": "10.8M", "lbl": "Social Reach"}, {"num": "86%", "lbl": "Giveaway Participation"}, {"num": "309K", "lbl": "Social Engagements"}],
+    tags:["Brand", "Experiential", "PARTNERSHIPS"],
+    gallery:[S+'57e57132-9c48-4fa2-a8e9-77c751d345c6/IMG_5635+copy.jpg',S+'28bf005e-c026-408b-baeb-2de73192d64a/*waka+shopping+2.jpg',S+'ea7a314c-c16c-4fc6-b4f7-ab80111cf74c/IMG_5709+copy.jpg',S+'16d7e3d3-e46a-4eb8-81ea-630473dd0e9a/BFA_39712_5596683.jpg','assets/uploads/bfa_39712_5597314.jpg',S+'173f514a-fb20-4323-919c-c83de85d6d62/IMG_5619+copy.jpg']
+  }},
+  { id:'tbc', brand:"Cash App", name:"The Bitcoin Classic", img:'assets/uploads/ajc_block_digi_edit__1.jpg', size:'2x', detail:{
+    heroImg:'assets/uploads/ajc_block_digi_edit__1-a7da20.jpg',
+    brief:"Founded in 2020, The Bitcoin Classic is the first-ever basketball tournament rewarding champions in bitcoin. In summer 2022, Cash App was the presenting sponsor at iconic Rucker Park, Harlem, the most storied, culturally relevant court in NYC where athletes like Kobe Bryant, Kevin Durant, and Allen Iverson have played.",
+    approach:"Eight teams competed to win $20K of bitcoin via Cash App. The two-day tournament featured 3-point contests, bitcoin education presentations, bitcoin and swag giveaways, and live performances by Harlem\u2019s own 27Delly. TBC helps increase access to bitcoin across underrepresented communities through recreation.",
+    impact:'',
+    stats:[{"num": "$20K", "lbl": "Bitcoin Prize"}, {"num": "2.1M", "lbl": "Twitter Reach"}, {"num": "92%", "lbl": "New to Giveaways"}],
+    tags:["Brand", "Experiential", "Community", "Content"],
+    gallery:[S+'3c33af0a-f729-447f-a62a-c3217a5df5b6/AJC_BLOCK_FILM_EDIT__119+copy.JPG',S+'97cc1a8c-3015-4d69-bc56-7a10589b43bd/AJC_BLOCK_FILM_EDIT__70+copy.JPG',S+'7ef29f2a-b907-485e-998c-88bda5066a04/AJC_BLOCK_FILM_EDIT__74+copy.JPG',S+'e55bf07f-71da-41f4-b7a2-39940c2ccc26/AJC_BCC_23_EDIT__122+copy.JPG','assets/uploads/ajc_block_film_edit__10-778bed.jpg','assets/uploads/ajc_block_digi_edit__15.jpg']
+  }},
+  { id:'basel', brand:"Cash App", name:"Art Basel", img:'assets/uploads/ajc_cash_film_06.jpg', size:'2x', detail:{
+    heroImg:S+'3ec8b861-b028-46bf-9851-047abbeda95e/AJC_CASH_FILM_06.jpg',
+    brief:"Cash App presents \"Joyride\" by Alehsy Lambo, bold, brash, colorful and disruptive mobile art installations at Art Basel that distribute free bitcoin. These installations symbolize both an urban-inspired disruption of the visual landscape and a challenge to the traditional financial system.",
+    approach:"Talent like Tiger Hood, New York Nico, and Cass Holland engaged with street golf participants, drove creatively reimagined golf carts, and gave away free bitcoin to passersby. Cash App also served as presenting sponsor of StockX\u2019s golf tournament, with JR Smith and Chantel Jeffries on the branded golf team.",
+    impact:'',
+    stats:[{"num": "70M+", "lbl": "Earned Impressions"}, {"num": "#1", "lbl": "Top TikTok Post"}],
+    tags:["Brand", "Experiential", "Art", "Culture"],
+    gallery:['assets/uploads/000432670006.jpg',S+'bb553d94-f711-4674-abae-eab3f6f895b7/AJC_CASH_FILM_28.jpg','assets/uploads/dsc00355-copy.jpg','assets/uploads/000432720004.jpg']
+  }},
+  { id:'lightning', brand:"Cash App", name:"Lightning Network", img:'assets/uploads/lightning_email_group.jpg', detail:{
+    heroImg:S+'e2892110-a533-497e-bb81-30a971cb5133/4_BTCL_Network_Mockup_SOCIAL_export_HiresMp4.gif',
+    brief:"We launched the GTM for integrating the Lightning Network on Cash App, allowing users to send bitcoin for free to anyone, anywhere in the world, within seconds. Customers can now send bitcoin internationally from Cash App to any external compatible wallet with zero fees.",
+    approach:"Lightning Network transforms bitcoin from being just an asset into a practical form of currency usable for daily spending, bill payments, and global money transfers. We announced to 3.5 million customers across email, social, and creator partnerships.",
+    impact:'',
+    stats:[{"num": "500K+", "lbl": "Twitter Views"}, {"num": "39.2%", "lbl": "Email Open Rate"}, {"num": "108%", "lbl": "Sentiment Increase"}, {"num": "#1", "lbl": "Lightning Deposits Day"}],
+    tags:["GTM", "L2", "LIGHTNING"],
+    gallery:[S+'b56a1d08-0d8d-411e-ab8e-5d07be3f243b/LIGHTNING_ALT.png']
+  }},
+  { id:'luar', brand:"Cash App", name:"Luar NYFW", img:S+'1711129140844-PFCYEXPA7FK39MB5Z7VX/AJC_LUAR_CASHAPP__24+copy.JPG', detail:{
+    heroImg:'assets/uploads/ajc_luar_cashapp__24.jpg',
+    brief:"Cash App bitcoin-powered Luar\u2019s NYFW runway show \"La Alta Gama\" (The High End), focusing on hispanic family reunion and micro-memories from the late 1980s. LUAR, founded in 2021 by Raul Lopez (co-founder of Hood By Air), is set to be one of the biggest names in fashion.",
+    approach:"We partnered with Luar to drive awareness to Cash App\u2019s bitcoin offerings and reinforce that bitcoin is for everyone. We did a bitcoin giveaway for staff, models, VIPs, and all attendees, 97% were new to Cash App giveaways. Cash App also exclusively sponsored Luar\u2019s One Year Anniversary Dinner with Raul Lopez and his VIPs, like Solange Knowles and ASAP Ferg.",
+    impact:'',
+    tags:["Brand", "Partnerships", "Fashion", "Culture"],
+    gallery:[S+'f2f43e31-6146-460c-b9bd-7785f68721c9/AJC_LUAR_CASHAPP__9.JPG','assets/uploads/ajc_luar_cashapp__70-2b3b32.jpg','assets/uploads/ajc_luar_cashapp__58.jpg',S+'229fff4f-898b-455f-9a35-ed93cc902a3f/912603277588346480rpreplay_final16630822201-ezgif.com-video-to-gif-converter.gif']
+  }},
+  { id:'atl', brand:"Cash App", name:"ATL Mural", img:'assets/uploads/courtrevealdronecolor_27.jpg', detail:{
+    heroImg:'assets/uploads/courtrevealdronecolor_27-800f93.jpg',
+    brief:"In collaboration with the non-profit, Art in the Paint, we unveiled the restored and newly branded Cash App mural at Atlanta\u2019s Brownwood Park basketball court. Inclusive and accessible public art that enhances the community.",
+    approach:"We take pride in contributing to infrastructure projects like this, which foster social and economic connections, making neighborhoods hubs of opportunity and empowerment.",
+    impact:'',
+    tags:["Brand", "Community", "Art", "ATL"],
+    gallery:['assets/uploads/ajc_cash_court_sony__37.jpg','assets/uploads/ajc_cash_court_sony__127-a545ad.jpg','assets/uploads/img_6005-f45edf.jpg','assets/uploads/courtrevealdronecolor_31.jpg']
+  }},
+  { id:'paid', brand:"Cash App", name:"Paid in Bitcoin", img:S+'fb3266db-029d-4c1f-9038-e43c9e0553da/PIB_Animated_v11_1.gif', detail:{
+    heroImg:S+'fb3266db-029d-4c1f-9038-e43c9e0553da/PIB_Animated_v11_1.gif',
+    brief:"Spearheaded the GTM for Paid in Bitcoin, a new feature enabling Cash App U.S. customers to allocate a portion of their paycheck to bitcoin.",
+    approach:"Hyper-focused communications targeting 5 million bitcoin and Direct Deposit customers via email, achieving an impressive average open rate of 30%, surpassing the 20% average for financial institutions.",
+    impact:'',
+    stats:[{"num": "30%", "lbl": "Email Open Rate"}, {"num": "400K+", "lbl": "Post Views"}, {"num": "5M", "lbl": "Customers Targeted"}],
+    tags:["GTM", "DIRECT DEPOSIT", "Lifecycle"],
+    gallery:[S+'fb3266db-029d-4c1f-9038-e43c9e0553da/PIB_Animated_v11_1.gif',S+'b14af88d-e3fc-44f3-9b90-67dd9d70d6dd/Screenshot+2023-10-18+at+3.16.18%E2%80%AFPM.png',S+'a1971c28-1b04-4b25-a635-9843aaba1a49/Email.jpg']
+  }},
+  { id:'pub-brand', brand:"Public", name:"Brand Campaign", img:S+'60cdb1bc-0a99-4611-8810-805345c614a8/20210608-DSC04841+copy.jpg', size:'2x', detail:{
+    heroImg:'assets/uploads/20210608-dsc04841-copy.jpg',
+    brief:"Launched Public\u2019s inaugural OOH campaign across Manhattan and Williamsburg, showcasing a fresh brand identity alongside real community members. Balanced the prevailing retail investment excitement with a focus on real people, highlighting their stories and advocating for long-term stability in investing.",
+    approach:"Developed branded social videos highlighting authentic stories and investing journeys of prominent members, distributed across social media and Comcast Direct Response TV. Collaborated closely with Comcast to optimize TV ads for DRTV settings with clear TOS, watermarks, strong CTAs, and product screens.",
+    impact:'',
+    tags:["Brand", "OOH", "DRTV"],
+    gallery:[S+'60cdb1bc-0a99-4611-8810-805345c614a8/20210608-DSC04841+copy.jpg',S+'151a5026-7181-461e-8cc4-c3cdcd556977/Public.com+taxi+1.jpg','assets/uploads/ryan-plett---hero_09_millana_roof_2551.jpg','assets/uploads/screen-shot-2021-05-04-at-9.11.53-am.png']
+  }},
+  { id:'pub-elon', brand:"Public", name:"Bronze Elon", img:S+'83754e53-01a7-4dda-8424-bca5aaec9c93/_DSC6071.JPG', detail:{
+    heroImg:'assets/uploads/_dsc6068.jpg',
+    brief:"Commissioned a 6-foot bronze statue and placed it at prominent locations like 14th St and The High Line stairs in NYC. Maximum internet chaos.",
+    approach:"Guerilla marketing with a social media giveaway distributing one hundred 14-inch bronze statues, gaining significant traction with over 1.5K retweets on Twitter. Life-size statue was auctioned on eBay with all proceeds supporting First Generation Investors.",
+    impact:'',
+    tags:["STUNY", "PR", "GUERILLA"],
+    gallery:[S+'83754e53-01a7-4dda-8424-bca5aaec9c93/_DSC6071.JPG',S+'418f5efe-7f15-4ef9-8f24-df6dbbc71399/_DSC6141.JPG',S+'48c2054f-4b6e-411c-8e6d-550dd3c2396c/_DSC6109.JPG',S+'7e54d001-a7e6-4a83-a7e1-e5d9da33dd60/_DSC6079.JPG',S+'67ae93c2-3695-43e2-add7-5e5f59b97cf5/E4-omZGWEA0rJBG.jpg']
+  }},
+  { id:'pub-otis', brand:"Public", name:"Otis", img:S+'d30a12f9-c818-41c6-8851-7c66849e48ab/Otis%2BAnnouncement_Medium_Assets%2BGIF.gif', detail:{
+    heroImg:'assets/uploads/otis-announcement_medium_assets-gif.gif',
+    brief:"Led the brand\u2019s GTM efforts for the Otis acquisition by Public, enabling members to invest in NFTs, art, collectibles, real estate, crypto, funds, stocks, and more, all within a unified platform.",
+    approach:"With just two weeks, orchestrated the overall strategy, positioning, messaging, and creation of creative assets for both general public and existing customers. Press kits, blog posts, email campaigns, social media content, video production, paid ads, branded merch, and creator collaborations.",
+    impact:'',
+    tags:["GTM", "M&A", "PR"],
+    gallery:[S+'d30a12f9-c818-41c6-8851-7c66849e48ab/Otis%2BAnnouncement_Medium_Assets%2BGIF.gif',S+'19818c04-f1fe-4ee4-9ee2-85f93fe5b80e/1_oQ9pDlXydLyP9msbeUFRug.png',S+'c6835593-d948-42d4-ba8d-4fbb31506566/Otis%2BAnnouncement_Medium%2BSupport.png']
+  }},
+  { id:'pub-crypto', brand:"Public", name:"Crypto", img:S+'1711059261098-0JMA7X6Y5XVMQM67URKT/APE+-+Paid+Social+2+copy.png', detail:{
+    heroImg:S+'1711059261098-0JMA7X6Y5XVMQM67URKT/APE+-+Paid+Social+2+copy.png',
+    brief:"Co-led the marketing launch of cryptocurrency on Public, including a teaser campaign with custom Instagram filter, t-shirt giveaway, and microsite, plus launch assets across product page, paid ads, creator content, and animated videos for digital and TV.",
+    approach:"Created animated cryptocurrency videos specifically tailored for DRTV platforms, designed to effectively communicate key crypto concepts on Public.",
+    impact:'',
+    tags:["GTM", "CRYPTO", "TRADING"],
+  }},
+  { id:'gem-coffee', brand:"Gemini", name:"Crypto & Coffee", img:'assets/uploads/pexz0830-copy.jpg', detail:{
+    heroImg:S+'c51fac35-1a1c-4324-afbe-e7d8c025bc40/PEXZ0830+copy.jpg',
+    brief:"The Crypto and Coffee series addressed common misconceptions about cryptocurrency through a \"man on the street\" style shoot covering regulation, security, consumer protection, and more. Infused personality into crypto by taking to the streets and demystifying the asset class.",
+    approach:"Launched in three major U.S. cities: New York, Washington D.C., and San Francisco. Created over 20 videos featuring the Gemini Street Team, a diverse group of Gemini employees and executive team members.",
+    impact:'',
+    stats:[{"num": "2.5M+", "lbl": "Views"}, {"num": "20+", "lbl": "Videos Created"}, {"num": "4", "lbl": "Cities"}],
+    tags:["EXPERIENTIAL", "CONTENT", "UGC"],
+    gallery:[S+'c51fac35-1a1c-4324-afbe-e7d8c025bc40/PEXZ0830+copy.jpg','assets/uploads/pexz0397-copy-37d75b.jpg','assets/uploads/img_0800.jpg','assets/uploads/pexz0711-copy.jpg','assets/uploads/image-from-ios--2--copy.jpg']
+  }},
+  { id:'gem-brand', brand:"Gemini", name:"Brand Campaign", img:'assets/uploads/--james-chororos_gemini_08-copy-6b9a8e.jpg', size:'2x', detail:{
+    heroImg:'assets/uploads/--james-chororos_gemini_08-copy.jpg',
+    brief:"Played a pivotal role in building and creating Gemini\u2019s first national brand campaign, introducing Gemini and cryptocurrency to a broader audience of everyday investors through an above-the-line approach. The \"Revolution Needs Rules\" campaign aimed to evoke strong sentiments regarding the need for regulation in crypto.",
+    approach:"Launched nationally across major U.S. cities including New York, Washington D.C., Chicago, San Francisco, Miami, Los Angeles, and Houston. OOH-dominant with subway station takeovers, giant billboard on Broad Street, taxi tops, airport terminals, and kiosk placements. Also produced a branded timelapse video using a reversed format to underscore that \"an ad is just an ad; it\u2019s what\u2019s behind it that counts.\"",
+    impact:'',
+    tags:["Brand", "OOH"],
+    gallery:[S+'39be5c0b-2c25-4767-8e3e-765947961e4f/Gemini+-+INDV+-+Subway+-+NYT+Feature.jpg','assets/uploads/gemini---giant-propeller---subway.png','assets/uploads/taxi-top.png','assets/uploads/--james-chororos_gemini_13-copy-ddaa09.jpg','assets/uploads/gemini---giant-propeller---kiosk---money-has-a-future-2.png']
+  }},
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function render() {
+  const g = document.getElementById('bento-grid');
+  g.innerHTML = projects.map(p => {
+    if (p.type === 'about') return '<div class="bc bc--about" id="about-section"><div class="bc-info"><div class="abl">About</div><div class="abt"><strong>Head of Bitcoin Marketing at Block</strong>, leading narrative, GTM, and brand across Cash App, Square, Bitkey, and Proto. Previously built brands at Public and Gemini. I think in systems, move through culture, and believe the best marketing makes technology disappear behind the outcome.</div></div></div>';
+    if (p.type === 'photo') { const pu = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=750w' : p.img); return '<div class="bc bc--photo" style="min-height:280px"><div class="bc-img" style="background-image:url(\''+pu+'\')"></div></div>'; }
+    if (p.type === 'culture') { const cu = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=750w' : p.img); return '<div class="bc bc--culture"><div class="bc-img" style="background-image:url(\''+cu+'\')"></div></div>'; }
+    const sc = p.size==='2x'?'bc--2x':'';
+    const imgUrl = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=1000w' : p.img);
+    const editThumbBtn = '<button class="img-edit-btn" onclick="event.stopPropagation();editThumbById(\''+p.id+'\')">Change Image</button>';
+    return '<div class="bc '+sc+'" onclick="op(\''+p.id+'\')" style="min-height:'+(p.size==='2x'?'240':'180')+'px;position:relative"><div class="bc-img" style="background-image:url(\''+imgUrl+'\')"></div><div class="bc-ov"></div>'+editThumbBtn+(p.isNew?'<div class="bc-new">New</div>':'')+'<div class="bc-info"><div class="bc-brand">'+p.brand+'</div><div class="bc-name">'+p.name+'</div></div></div>';
+  }).join('');
+}
+
+function renderGallery() {
+  const t = document.getElementById('galleryTrack');
+  const imgs = galleryImgs;
+  t.innerHTML = imgs.map(u => '<img class="gallery-img" src="'+u+'?format=500w" alt="" loading="lazy">').join('');
+}
+
+function op(id) {
+  const p = projects.find(x=>x.id===id);
+  if(!p||!p.detail)return;
+  const d=p.detail;
+  const statsHtml = d.stats ? '<div class="stat-row">'+d.stats.map(s=>'<div class="stat"><div class="num">'+s.num+'</div><div class="lbl">'+s.lbl+'</div></div>').join('')+'</div>' : '';
+  let tagsHtml = '';
+  if (d.tags) {
+    const isEd = document.body.classList.contains('edit-mode');
+    tagsHtml = '<div class="tag-row">' + d.tags.map((t,ti) =>
+      '<span class="tag"' + (isEd ? ' contenteditable="true" data-field="tag-'+ti+'"' : '') + '>' + t + '</span>' +
+      (isEd ? '<button class="remove-stat-btn" onclick="removeTag('+ti+')" style="margin-left:-4px;margin-right:4px">x</button>' : '')
+    ).join('') + (isEd ? '<button class="add-stat-btn" onclick="addTag()">+ Tag</button>' : '') + '</div>';
+  }
+  // Hero: use heroImg if set, otherwise fall back to thumbnail
+  const heroSrc = d.heroImg || p.img || '';
+  const heroUrl = heroSrc ? (heroSrc.startsWith('http') ? heroSrc+'?format=1500w' : heroSrc) : '';
+  // For data URLs (from file picker), skip format params
+  let videoHtml = '';
+  var vids = [d.video, d.video2].filter(Boolean);
+  vids.forEach(function(v) {
+    if (v.endsWith('.mp4')) {
+      videoHtml += '<div class="ov-video"><video controls playsinline><source src="'+v+'" type="video/mp4"></video></div>';
+    } else {
+      videoHtml += '<div class="ov-video"><iframe src="'+v+'" title="'+p.name+'" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+    }
+  });
+  // Filter gallery: never repeat the thumbnail or hero image
+  const getFile = s => s && !s.startsWith('data:') ? s.split('/').pop().split('?')[0].toLowerCase() : '';
+  const thumbFile = getFile(p.img);
+  const heroFile = getFile(heroSrc);
+  const filteredGallery = d.gallery ? d.gallery.filter(u => {
+    if (u.startsWith('data:')) return true;
+    const f = getFile(u);
+    return f !== thumbFile && f !== heroFile;
+  }) : [];
+  const isEdit = document.body.classList.contains('edit-mode');
+  const galleryHtml = filteredGallery.length ? '<div class="ov-gallery">'+filteredGallery.map((u,gi)=>{
+    const url = u.startsWith('http') ? u+'?format=1000w' : (u.startsWith('data:') ? u : u);
+    const origIdx = d.gallery ? d.gallery.indexOf(u) : gi;
+    const editBtn = isEdit ? '<button class="img-edit-btn" onclick="editGalleryImg('+origIdx+')">Change</button>' : '';
+    const delBtn = isEdit ? '<button class="img-del-btn" onclick="deleteGalleryImg('+origIdx+')">Delete</button>' : '';
+    return '<div style="position:relative">'+editBtn+delBtn+'<img src="'+url+'" alt="" loading="lazy" style="width:100%;border-radius:10px;height:250px;object-fit:cover"></div>';
+  }).join('')+'</div>' : '';
+
+  const editable = document.body.classList.contains('edit-mode');
+  const ce = editable ? ' contenteditable="true"' : '';
+
+  let statsEditHtml = '';
+  if (d.stats) {
+    statsEditHtml = '<div class="stat-row">' + d.stats.map((s,i) =>
+      '<div class="stat"><div class="num"'+ce+' data-field="stat-num-'+i+'">'+s.num+'</div><div class="lbl"'+ce+' data-field="stat-lbl-'+i+'">'+s.lbl+'</div>'+(editable?'<button class="remove-stat-btn" onclick="removeStat('+i+')">x</button>':'')+'</div>'
+    ).join('') + '</div>' + (editable ? '<button class="add-stat-btn" onclick="addStat()">+ Add Stat</button>' : '');
+  }
+
+  document.getElementById('ovInner').innerHTML =
+    '<div class="ov-brand"'+ce+' data-field="brand">'+p.brand+'</div>'+
+    '<h1 class="ov-title"'+ce+' data-field="name">'+p.name+'</h1>'+
+    tagsHtml+
+    (heroUrl?'<div class="ov-hero" style="position:relative"><img src="'+heroUrl+'" alt="'+p.name+'" loading="lazy"><button class="img-edit-btn" onclick="editImg(\'hero\')">Change</button><button class="img-del-btn" onclick="deleteImg(\'hero\')">Delete</button></div>':'')+
+    '<div class="ov-body">'+
+      '<h3>The Brief</h3><p'+ce+' data-field="brief">'+d.brief+'</p>'+
+      statsEditHtml+
+      '<h3>The Approach</h3><p'+ce+' data-field="approach">'+d.approach+'</p>'+
+    '</div>'+
+    videoHtml+
+    galleryHtml;
+
+  // Store current project id for editing
+  document.getElementById('ov').dataset.projectId = id;
+  document.getElementById('ov').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function cl(){document.getElementById('ov').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('ovClose').addEventListener('click',cl);
+document.getElementById('ov').addEventListener('click',function(e){if(e.target===document.getElementById('ov'))cl()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')cl()});
+
+// Tilt effect
+document.addEventListener('mousemove',function(e){
+  document.querySelectorAll('.bc:not(.bc--about):not(.bc--photo):not(.bc--culture)').forEach(function(c){
+    var r=c.getBoundingClientRect();
+    if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){
+      var x=(e.clientX-r.left)/r.width-.5;
+      var y=(e.clientY-r.top)/r.height-.5;
+      c.style.transform='translateY(-4px) rotateY('+x*5+'deg) rotateX('+(-y*5)+'deg)';
+    }
+  });
+});
+
+render();
+renderGallery();
+
+// Gallery arrow scroll
+function scrollGallery(dir) {
+  var strip = document.getElementById('galleryStrip');
+  if (!strip) return;
+  strip.scrollBy({ left: dir * 400, behavior: 'smooth' });
+}
+
+// Live BTC price
+function fetchBtcPrice() {
+  fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      var price = data.bitcoin.usd;
+      document.getElementById('btc-price').textContent = '$' + price.toLocaleString();
+    }).catch(function(){});
+}
+fetchBtcPrice();
+setInterval(fetchBtcPrice, 60000);
+
+// ======== EDIT MODE ========
+var editMode = false;
+
+function toggleEdit() {
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  document.querySelector('.edit-toggle').classList.toggle('active', editMode);
+  document.querySelector('.edit-toggle').textContent = editMode ? 'Editing' : 'Edit';
+  // If overlay is open, re-render it in edit mode
+  var ovEl = document.getElementById('ov');
+  if (ovEl.classList.contains('open') && ovEl.dataset.projectId) {
+    op(ovEl.dataset.projectId);
+  }
+}
+
+function saveCurrentProject() {
+  // If overlay is open, read its editable fields into the data
+  var ovEl = document.getElementById('ov');
+  var id = ovEl ? ovEl.dataset.projectId : '';
+  if (id) {
+    var p = projects.find(function(x){return x.id===id});
+    if (p && p.detail) {
+      var d = p.detail;
+      var fields = ['brief','approach','impact','brand','name'];
+      fields.forEach(function(f) {
+        var el = document.querySelector('[data-field="'+f+'"]');
+        if (el) {
+          if (f === 'brand') p.brand = el.textContent.trim();
+          else if (f === 'name') p.name = el.textContent.trim();
+          else d[f] = el.textContent.trim();
+        }
+      });
+      if (d.stats) {
+        d.stats.forEach(function(s, i) {
+          var numEl = document.querySelector('[data-field="stat-num-'+i+'"]');
+          var lblEl = document.querySelector('[data-field="stat-lbl-'+i+'"]');
+          if (numEl) s.num = numEl.textContent.trim();
+          if (lblEl) s.lbl = lblEl.textContent.trim();
+        });
+      }
+      if (d.tags) {
+        d.tags.forEach(function(t, i) {
+          var tagEl = document.querySelector('[data-field="tag-'+i+'"]');
+          if (tagEl) d.tags[i] = tagEl.textContent.trim();
+        });
+      }
+    }
+  }
+
+  // Re-render grid
+  render();
+
+  // Always save to disk — whether from overlay or landing page
+  saveToDisk();
+}
+
+function pickFile(callback) {
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+
+    // If on localhost, upload file to server and get a real path
+    if (window.location.protocol === 'http:' && window.location.hostname === 'localhost') {
+      var formData = new FormData();
+      formData.append('file', file);
+      fetch('/upload', { method: 'POST', body: formData })
+        .then(function(r){ return r.json(); })
+        .then(function(data) {
+          if (data.ok && data.path) {
+            callback(data.path, file.name);
+          } else {
+            alert('Upload failed: ' + (data.error || 'unknown'));
+          }
+        })
+        .catch(function(err) {
+          alert('Upload failed: ' + err.message);
+        });
+    } else {
+      // Fallback: use data URL (won't persist on save)
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        callback(ev.target.result, file.name);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  input.click();
+}
+
+function editImg(type) {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p) return;
+
+  pickFile(function(dataUrl, fileName) {
+    if (type === 'hero') {
+      p.detail.heroImg = dataUrl;
+    }
+    saveCurrentProject();
+    op(id);
+  });
+}
+
+function editThumb() {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  if (!id) return;
+  editThumbById(id);
+}
+
+function editThumbById(id) {
+  var p = projects.find(function(x){return x.id===id});
+  if (!p) return;
+  pickFile(function(dataUrl, fileName) {
+    p.img = dataUrl;
+    render();
+    saveToDisk();
+  });
+}
+
+function editGalleryImg(index) {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail || !p.detail.gallery) return;
+
+  pickFile(function(dataUrl, fileName) {
+    p.detail.gallery[index] = dataUrl;
+    saveCurrentProject();
+    op(id);
+  });
+}
+
+function deleteImg(type) {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail) return;
+  if (type === 'hero') {
+    p.detail.heroImg = '';
+  }
+  saveCurrentProject();
+  op(id);
+}
+
+function deleteGalleryImg(index) {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail || !p.detail.gallery) return;
+  saveCurrentProject();
+  p.detail.gallery.splice(index, 1);
+  op(id);
+}
+
+function addStat() {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail) return;
+  if (!p.detail.stats) p.detail.stats = [];
+  saveCurrentProject();
+  p.detail.stats.push({num:'0', lbl:'Label'});
+  op(id);
+}
+
+function removeStat(i) {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail || !p.detail.stats) return;
+  saveCurrentProject();
+  p.detail.stats.splice(i, 1);
+  op(id);
+}
+
+function addTag() {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail) return;
+  if (!p.detail.tags) p.detail.tags = [];
+  saveCurrentProject();
+  p.detail.tags.push('New');
+  op(id);
+}
+
+function removeTag(i) {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail || !p.detail.tags) return;
+  saveCurrentProject();
+  p.detail.tags.splice(i, 1);
+  op(id);
+}
+
+function exportData() {
+  var data = projects.filter(function(p){return p.id}).map(function(p) {
+    return { id:p.id, brand:p.brand, name:p.name, img:p.img, size:p.size||'1x', isNew:!!p.isNew, detail:p.detail };
+  });
+  var json = JSON.stringify(data, null, 2);
+  var blob = new Blob([json], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'portfolio-data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function saveToDisk() {
+  // Send project data as JSON — server handles writing to HTML file
+  var cleanProjects = JSON.parse(JSON.stringify(projects, function(key, val) {
+    // Strip data: URLs (from file picker) — too large to save
+    if (typeof val === 'string' && val.startsWith('data:') && val.length > 500) return '';
+    return val;
+  }));
+
+  var statusEl = document.querySelector('.edit-bar .status');
+
+  if (window.location.protocol !== 'http:' || window.location.hostname !== 'localhost') {
+    statusEl.textContent = 'Open via localhost to enable saving';
+    statusEl.style.color = '#999';
+    setTimeout(function(){ statusEl.textContent = ''; statusEl.style.color = ''; }, 4000);
+    return;
+  }
+
+  statusEl.textContent = 'Saving...';
+  statusEl.style.color = '#666';
+
+  fetch('/save', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({projectsJson: cleanProjects})
+  }).then(function(r){ return r.json(); }).then(function(data) {
+    if (data.ok) {
+      statusEl.textContent = 'Saved!';
+      statusEl.style.color = 'var(--electric)';
+    } else {
+      statusEl.textContent = 'Save failed: ' + (data.error||'unknown');
+      statusEl.style.color = 'red';
+    }
+    setTimeout(function(){ statusEl.textContent = ''; statusEl.style.color = ''; }, 3000);
+  }).catch(function(err) {
+    statusEl.textContent = 'Save failed — is the server running?';
+    statusEl.style.color = 'red';
+    setTimeout(function(){ statusEl.textContent = ''; statusEl.style.color = ''; }, 4000);
+  });
+}
+
+function exportData() {
+  var data = projects.filter(function(p){return p.id}).map(function(p) {
+    return { id:p.id, brand:p.brand, name:p.name, img:p.img, size:p.size||'1x', isNew:!!p.isNew, detail:p.detail };
+  });
+  var json = JSON.stringify(data, null, 2);
+  var blob = new Blob([json], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'portfolio-data.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+</script>
+
+<!-- Edit Mode UI -->
+<button class="edit-toggle" onclick="toggleEdit()" style="display:none">Edit</button>
+<script>
+// Secret: press E 3 times quickly to reveal edit button
+(function(){
+  var count=0, timer=null;
+  document.addEventListener('keydown', function(e){
+    if(e.target.isContentEditable || e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA') return;
+    if(e.key==='e'||e.key==='E'){
+      count++;
+      clearTimeout(timer);
+      if(count>=3){
+        var btn=document.querySelector('.edit-toggle');
+        btn.style.display = btn.style.display==='none'?'':'none';
+        count=0;
+      }
+      timer=setTimeout(function(){count=0},800);
+    }
+  });
+})();
+</script>
+<div class="edit-bar">
+  <button class="save-btn" onclick="saveCurrentProject()">Save Changes</button>
+  <button class="export-btn" onclick="exportData()">Export JSON</button>
+  <span class="status"></span>
+</div>
+
+</body>
+</html>
