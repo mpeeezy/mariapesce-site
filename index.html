@@ -737,7 +737,7 @@ const projects = [
 function render() {
   const g = document.getElementById('bento-grid');
   g.innerHTML = projects.map(p => {
-    if (p.type === 'about') return '<div class="bc bc--about" id="about-section"><div class="bc-info"><div class="abl">About</div><div class="abt"><strong>Head of Bitcoin Marketing at Block</strong>, leading narrative, GTM, and brand across Cash App, Square, Bitkey, and Proto. Previously built brands at Public and Gemini. I think in systems, move through culture, and believe the best marketing makes technology disappear behind the outcome.</div></div></div>';
+    if (p.type === 'about') return '<div class="bc bc--about" id="about-section"><div class="bc-info"><div class="abl">About</div><div class="abt">Bringing bitcoin mainstream. <strong>Head of Bitcoin Marketing at Block</strong>, leading GTM, brand, and growth across Cash App, Square, Bitkey, and Proto. Previously built brands at Public and Gemini. I think in systems, move through culture, and believe the best marketing makes technology felt, not explained.</div></div></div>';
     if (p.type === 'photo') { const pu = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=750w' : p.img); return '<div class="bc bc--photo" style="min-height:280px"><div class="bc-img" style="background-image:url(\''+pu+'\')"></div></div>'; }
     if (p.type === 'culture') { const cu = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=750w' : p.img); return '<div class="bc bc--culture"><div class="bc-img" style="background-image:url(\''+cu+'\')"></div></div>'; }
     const sc = p.size==='2x'?'bc--2x':'';
