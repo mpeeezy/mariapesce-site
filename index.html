@@ -387,6 +387,51 @@ const projects = [
     tags:["GTM", "ECOSYSTEM", "RELEASES"],
     gallery:['assets/releases/cash-releases-bitcoin.png','assets/uploads/edu_green_01.png']
   }},
+  { id:'cbtc2', brand:"Cash App", name:"Cash Bitcoin 2.0", img:'', size:'2x', isNew:true, detail:{
+    heroImg:'',
+    brief:"The next evolution in making bitcoin everyday money. We\u2019re building the most affordable, deeply integrated bitcoin experience inside a mainstream financial app, we\u2019re reintroducing Cash App as the fastest, cheapest, and most utility-driven place to buy, hold, move, and spend bitcoin.",
+    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    impact:'',
+    stats:[],
+    tags:[],
+    gallery:[]
+  }},
+  { id:'sq-auto', brand:"Square", name:"SQ BTC Payments Auto-Enablement", img:'', size:'1x', isNew:true, detail:{
+    heroImg:'',
+    brief:"Bitcoin payments rolled out to millions of Square sellers in the U.S., making it easier than ever to accept bitcoin at checkout, no setup necessary.",
+    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    impact:'',
+    stats:[],
+    tags:[],
+    gallery:[]
+  }},
+  { id:'bitkey-ng', brand:"Bitkey", name:"Next-Generation Bitkey", img:'', size:'1x', isNew:true, detail:{
+    heroImg:'',
+    brief:"[PLACEHOLDER \u2014 awaiting brief copy from Maria]",
+    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    impact:'',
+    stats:[],
+    tags:[],
+    gallery:[]
+  }},
+  { id:'btc-day', brand:"Block", name:"Bitcoin Day", img:'', size:'1x', isNew:true, detail:{
+    heroImg:'',
+    brief:"Block\u2019s first cross-ecosystem bitcoin activation (Cash App, Square, Bitkey). A $1M giveaway tied to the full buy-spend-self-custody loop sold out in under 3 days.",
+    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    impact:'',
+    stats:[],
+    tags:[],
+    gallery:[]
+  }},
+  { id:'btc-vegas', brand:"Block", name:"Bitcoin Vegas", img:'', size:'2x', isNew:true, detail:{
+    heroImg:'',
+    brief:"Debuted the new Bitcoin at Block brand platform at the biggest cultural moment in bitcoin. This is the first time Cash App, Square, Bitkey, Proto, Tidal, and Spiral show up together; each with its own identity, but unmistakably part of a single ecosystem built on bitcoin.",
+    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    impact:'',
+    stats:[],
+    tags:[],
+    gallery:[]
+  }},
   { id:'tortoise', brand:"Cash App", name:"Tortoise Card", img:S+'1740690327425-VSSIIWPP4FC3SOPETJGZ/00-CardHero-01.png', size:'2x', detail:{
     heroImg:'assets/uploads/00-cardhero-01.png',
     brief:"Cash App launched a new signature Cash App Card called Tortoise in February 2025. Featuring a pearlescent black and brown tortoise shell pattern with gold detailing, no two cards are the same. In a world filled with plain, unimaginative debit cards, the Cash App Tortoise Card stands out as a true original.",
@@ -737,7 +782,7 @@ const projects = [
 function render() {
   const g = document.getElementById('bento-grid');
   g.innerHTML = projects.map(p => {
-    if (p.type === 'about') return '<div class="bc bc--about" id="about-section"><div class="bc-info"><div class="abl">About</div><div class="abt">Bringing bitcoin mainstream. <strong>Head of Bitcoin Marketing at Block</strong>, leading GTM, brand, and growth across Cash App, Square, Bitkey, and Proto. Previously built brands at Gemini and Public. I focus on making complex technology intuitive, accessible, and culturally resonant.</div></div></div>';
+    if (p.type === 'about') return '<div class="bc bc--about" id="about-section"><div class="bc-info"><div class="abl">About</div><div class="abt">Bringing bitcoin mainstream. <strong>Head of Bitcoin Marketing at Block</strong>, leading GTM, brand, and growth across Cash App, Square, Bitkey, and Proto. Previously built brands at Gemini and Public. I focus on making complex technology feel human.</div></div></div>';
     if (p.type === 'photo') { const pu = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=750w' : p.img); return '<div class="bc bc--photo" style="min-height:280px"><div class="bc-img" style="background-image:url(\''+pu+'\')"></div></div>'; }
     if (p.type === 'culture') { const cu = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=750w' : p.img); return '<div class="bc bc--culture"><div class="bc-img" style="background-image:url(\''+cu+'\')"></div></div>'; }
     const sc = p.size==='2x'?'bc--2x':'';
