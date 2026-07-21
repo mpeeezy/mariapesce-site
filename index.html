@@ -184,6 +184,12 @@ body.edit-mode .stat [contenteditable]:focus { outline:2px solid var(--electric)
 body.edit-mode .img-edit-btn { opacity:1; pointer-events:auto; }
 body.edit-mode .bc:hover .img-edit-btn { opacity:1; }
 .img-edit-btn:hover { background:var(--electric); }
+.reorder-btns { position:absolute; bottom:8px; left:8px; z-index:10; display:flex; gap:4px; opacity:0; pointer-events:none; transition:opacity .2s; }
+body.edit-mode .reorder-btns { opacity:1; pointer-events:auto; }
+.reorder-btns button { background:var(--ink); color:#fff; border:none; font-family:'Space Mono',monospace; font-size:11px; line-height:1; padding:6px 9px; border-radius:4px; cursor:pointer; }
+.reorder-btns button:hover { background:var(--electric); }
+.reorder-btns button:disabled { opacity:.35; cursor:default; }
+.reorder-btns button:disabled:hover { background:var(--ink); }
 .edit-bar { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:300; display:none; gap:8px; align-items:center; background:#fff; padding:8px 16px; border-radius:10px; box-shadow:0 4px 24px rgba(0,0,0,.15); border:1px solid var(--cloud); }
 body.edit-mode .edit-bar { display:flex; }
 .edit-bar button { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:7px 14px; border-radius:6px; border:none; cursor:pointer; transition:all .2s; }
@@ -352,46 +358,37 @@ const projects = [
   { id:'cbtc2', brand:"Cash App", name:"Cash Bitcoin 2.0", img:'', size:'2x', isNew:true, detail:{
     heroImg:'',
     brief:"The next evolution in making bitcoin everyday money. We\u2019re building the most affordable, deeply integrated bitcoin experience inside a mainstream financial app, we\u2019re reintroducing Cash App as the fastest, cheapest, and most utility-driven place to buy, hold, move, and spend bitcoin.",
-    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    approach:"A two-phase, product-led reset. Phase 1 led with radically lower pricing, zero-fee large buys, and 5x higher withdrawal limits, targeting the ~400K churned high-value bitcoin users and re-engaging the ~1M MAU base that drives 96% of BTC gross profit. Backed by lifecycle, owned social, an X AMA with Miles Suter, a 5\u201310-creator bitcoin-native cohort, and exec/earned social. Phase 2, Bitcoin Day, proved the reset works at scale across millions of users. [DRAFT \u2014 please audit]",
     impact:'',
     stats:[],
-    tags:[],
-    gallery:[]
-  }},
-  { id:'sq-auto', brand:"Square", name:"SQ BTC Payments Auto-Enablement", img:'', size:'1x', isNew:true, detail:{
-    heroImg:'',
-    brief:"Bitcoin payments rolled out to millions of Square sellers in the U.S., making it easier than ever to accept bitcoin at checkout, no setup necessary.",
-    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
-    impact:'',
-    stats:[],
-    tags:[],
+    tags:["GTM","FEES","LIFECYCLE","CREATORS"],
     gallery:[]
   }},
   { id:'bitkey-ng', brand:"Bitkey", name:"Next-Generation Bitkey", img:'', size:'1x', isNew:true, detail:{
     heroImg:'',
-    brief:"[PLACEHOLDER \u2014 awaiting brief copy from Maria]",
-    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    brief:"Bitkey W3: Bitkey\u2019s biggest hardware launch in two years. A next-gen wallet with a secure touchscreen that verifies not just bitcoin transactions, but security credential changes too, something no other hardware wallet does. [DRAFT \u2014 please audit]",
+    approach:"Positioned around \u201csafety, not just security\u201d: 2-of-3 multisig, no seed phrase, built-in inheritance, and now hardware-verified changes to email, recovery contacts, and mobile pay. Launched at Bitcoin Las Vegas with a coordinated push across social teaser, CRM, PR (Deep Dive PDF, blog), a same-day website and ecommerce redesign, and Amazon US/Canada preorder. [DRAFT \u2014 please audit]",
     impact:'',
-    stats:[],
-    tags:[],
+    stats:[{"num": "$250", "lbl": "Price Point"}, {"num": "3,540", "lbl": "60-Day Sales Target"}, {"num": "200", "lbl": "Units Sold at Launch"}],
+    tags:["GTM","HARDWARE","RELEASES"],
     gallery:[]
   }},
   { id:'btc-day', brand:"Block", name:"Bitcoin Day", img:'', size:'1x', isNew:true, detail:{
     heroImg:'',
     brief:"Block\u2019s first cross-ecosystem bitcoin activation (Cash App, Square, Bitkey). A $1M giveaway tied to the full buy-spend-self-custody loop sold out in under 3 days.",
-    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    approach:"Three linked actions building a real buy\u2192spend\u2192self-custody loop: buy $10 BTC to earn $5 (broadest acquisition play, 194K winners), spend BTC at a Square seller to earn $25 (drove merchant discovery and bitcoin payments behavior, 1,114 winners), and withdraw $50 BTC to earn $50 (rewarded existing holders and drove Bitkey consideration, 847 winners). Backed by a dedicated btc.day microsite, lifecycle, social, creators, and PR across all three brands. [DRAFT \u2014 please audit]",
     impact:'',
-    stats:[],
-    tags:[],
+    stats:[{"num": "88K", "lbl": "Incremental BTC Actives"}, {"num": "$11", "lbl": "CAC"}, {"num": "$84M", "lbl": "Buy/Sell Volume"}, {"num": "$2.9M", "lbl": "Gross Profit"}],
+    tags:["GTM","ECOSYSTEM","GIVEAWAY"],
     gallery:[]
   }},
   { id:'btc-vegas', brand:"Block", name:"Bitcoin Vegas", img:'', size:'2x', isNew:true, detail:{
     heroImg:'',
     brief:"Debuted the new Bitcoin at Block brand platform at the biggest cultural moment in bitcoin. This is the first time Cash App, Square, Bitkey, Proto, Tidal, and Spiral show up together; each with its own identity, but unmistakably part of a single ecosystem built on bitcoin.",
-    approach:"[PLACEHOLDER \u2014 awaiting approach copy from Maria]",
+    approach:"Proved the full buy\u2192spend\u2192secure\u2192power loop live on the floor: Cash App ran a $58K BTC giveaway across 2.7K payouts and drove 9K P2P bitcoin receives in week one; Square generated $26K in corner-store GPV across 826 BTC payments; Bitkey debuted its next-gen W3 hardware wallet and sold 200 units on-site; Proto saw early developer traction with 271 GitHub visitors and its first merged community PR. Backed by a 4.36M-impression airport takeover and 3.06M owned social impressions. [DRAFT \u2014 please audit]",
     impact:'',
-    stats:[],
-    tags:[],
+    stats:[{"num": "33K", "lbl": "Passes Issued"}, {"num": "4.36M", "lbl": "OOH Impressions"}, {"num": "3.06M", "lbl": "Social Impressions"}, {"num": "200", "lbl": "Bitkey Units Sold"}],
+    tags:["Brand","Experiential","ECOSYSTEM","OOH"],
     gallery:[]
   }},
   { id:'bem', brand:"Block", name:"Bitcoin Is Everyday Money", img:'assets/uploads/image--5--95166e.png', size:'2x', detail:{
@@ -781,15 +778,32 @@ const projects = [
 
 function render() {
   const g = document.getElementById('bento-grid');
-  g.innerHTML = projects.map(p => {
+  g.innerHTML = projects.map((p, idx) => {
     if (p.type === 'about') return '<div class="bc bc--about" id="about-section"><div class="bc-info"><div class="abl">About</div><div class="abt">Bringing bitcoin mainstream. <strong>Head of Bitcoin Marketing at Block</strong>, leading GTM, brand, and growth across Cash App, Square, Bitkey, and Proto. Previously built brands at Gemini and Public. I focus on making complex technology feel human.</div></div></div>';
     if (p.type === 'photo') { const pu = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=750w' : p.img); return '<div class="bc bc--photo" style="min-height:280px"><div class="bc-img" style="background-image:url(\''+pu+'\')"></div></div>'; }
     if (p.type === 'culture') { const cu = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=750w' : p.img); return '<div class="bc bc--culture"><div class="bc-img" style="background-image:url(\''+cu+'\')"></div></div>'; }
     const sc = p.size==='2x'?'bc--2x':'';
     const imgUrl = p.img.startsWith('data:') ? p.img : (p.img.startsWith('http') ? p.img+'?format=1000w' : p.img);
     const editThumbBtn = '<button class="img-edit-btn" onclick="event.stopPropagation();editThumbById(\''+p.id+'\')">Change Image</button>';
-    return '<div class="bc '+sc+'" onclick="op(\''+p.id+'\')" style="min-height:'+(p.size==='2x'?'240':'180')+'px;position:relative"><div class="bc-img" style="background-image:url(\''+imgUrl+'\')"></div><div class="bc-ov"></div>'+editThumbBtn+(p.isNew?'<div class="bc-new">New</div>':'')+'<div class="bc-info"><div class="bc-brand">'+p.brand+'</div><div class="bc-name">'+p.name+'</div></div></div>';
+    const canMoveUp = idx > 0 && !!projects[idx-1].id;
+    const canMoveDown = idx < projects.length-1 && !!projects[idx+1].id;
+    const reorderBtns = '<div class="reorder-btns" onclick="event.stopPropagation()"><button '+(canMoveUp?'':'disabled')+' onclick="moveProject(\''+p.id+'\',-1)" title="Move up">\u2191</button><button '+(canMoveDown?'':'disabled')+' onclick="moveProject(\''+p.id+'\',1)" title="Move down">\u2193</button></div>';
+    return '<div class="bc '+sc+'" onclick="op(\''+p.id+'\')" style="min-height:'+(p.size==='2x'?'240':'180')+'px;position:relative"><div class="bc-img" style="background-image:url(\''+imgUrl+'\')"></div><div class="bc-ov"></div>'+editThumbBtn+reorderBtns+(p.isNew?'<div class="bc-new">New</div>':'')+'<div class="bc-info"><div class="bc-brand">'+p.brand+'</div><div class="bc-name">'+p.name+'</div></div></div>';
   }).join('');
+}
+
+function moveProject(id, direction) {
+  const idx = projects.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  const targetIdx = idx + direction;
+  if (targetIdx < 0 || targetIdx >= projects.length) return;
+  const target = projects[targetIdx];
+  if (!target.id) return; // don't move past the pinned photo/about cards
+  const tmp = projects[idx];
+  projects[idx] = projects[targetIdx];
+  projects[targetIdx] = tmp;
+  render();
+  saveToDisk();
 }
 
 function renderGallery() {
