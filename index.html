@@ -848,13 +848,15 @@ function op(id) {
     return f !== thumbFile && f !== heroFile;
   }) : [];
   const isEdit = document.body.classList.contains('edit-mode');
-  const galleryHtml = filteredGallery.length ? '<div class="ov-gallery">'+filteredGallery.map((u,gi)=>{
+  const galleryItemsHtml = filteredGallery.map((u,gi)=>{
     const url = u.startsWith('http') ? u+'?format=1000w' : (u.startsWith('data:') ? u : u);
     const origIdx = d.gallery ? d.gallery.indexOf(u) : gi;
     const editBtn = isEdit ? '<button class="img-edit-btn" onclick="editGalleryImg('+origIdx+')">Change</button>' : '';
     const delBtn = isEdit ? '<button class="img-del-btn" onclick="deleteGalleryImg('+origIdx+')">Delete</button>' : '';
     return '<div style="position:relative">'+editBtn+delBtn+'<img src="'+url+'" alt="" loading="lazy" style="width:100%;border-radius:10px;height:250px;object-fit:cover"></div>';
-  }).join('')+'</div>' : '';
+  }).join('');
+  const addGalleryBtn = isEdit ? '<button class="add-stat-btn" onclick="addGalleryImg()" style="grid-column:1/-1">+ Add Photo</button>' : '';
+  const galleryHtml = (filteredGallery.length || isEdit) ? '<div class="ov-gallery">'+galleryItemsHtml+addGalleryBtn+'</div>' : '';
 
   const editable = document.body.classList.contains('edit-mode');
   const ce = editable ? ' contenteditable="true"' : '';
@@ -870,7 +872,7 @@ function op(id) {
     '<div class="ov-brand"'+ce+' data-field="brand">'+p.brand+'</div>'+
     '<h1 class="ov-title"'+ce+' data-field="name">'+p.name+'</h1>'+
     tagsHtml+
-    (heroUrl?'<div class="ov-hero" style="position:relative"><img src="'+heroUrl+'" alt="'+p.name+'" loading="lazy"><button class="img-edit-btn" onclick="editImg(\'hero\')">Change</button><button class="img-del-btn" onclick="deleteImg(\'hero\')">Delete</button></div>':'')+
+    (heroUrl?'<div class="ov-hero" style="position:relative"><img src="'+heroUrl+'" alt="'+p.name+'" loading="lazy"><button class="img-edit-btn" onclick="editImg(\'hero\')">Change</button><button class="img-del-btn" onclick="deleteImg(\'hero\')">Delete</button></div>':(isEdit?'<div class="ov-hero" style="position:relative;min-height:120px;display:flex;align-items:center;justify-content:center;background:#f3f3f3;border-radius:10px"><button class="add-stat-btn" onclick="editImg(\'hero\')">+ Add Hero Image</button></div>':''))+
     '<div class="ov-body">'+
       '<h3>The Brief</h3><p'+ce+' data-field="brief">'+d.brief+'</p>'+
       statsEditHtml+
@@ -1071,6 +1073,19 @@ function deleteImg(type) {
   }
   saveCurrentProject();
   op(id);
+}
+
+function addGalleryImg() {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail) return;
+  if (!p.detail.gallery) p.detail.gallery = [];
+  pickFile(function(dataUrl, fileName) {
+    p.detail.gallery.push(dataUrl);
+    saveCurrentProject();
+    op(id);
+  });
 }
 
 function deleteGalleryImg(index) {
