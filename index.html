@@ -848,14 +848,21 @@ function op(id) {
     return f !== thumbFile && f !== heroFile;
   }) : [];
   const isEdit = document.body.classList.contains('edit-mode');
+  const isVideoFile = s => /\.(mp4|webm)($|\?)/i.test(s) || /^data:video\//i.test(s);
   const galleryItemsHtml = filteredGallery.map((u,gi)=>{
     const url = u.startsWith('http') ? u+'?format=1000w' : (u.startsWith('data:') ? u : u);
     const origIdx = d.gallery ? d.gallery.indexOf(u) : gi;
     const editBtn = isEdit ? '<button class="img-edit-btn" onclick="editGalleryImg('+origIdx+')">Change</button>' : '';
     const delBtn = isEdit ? '<button class="img-del-btn" onclick="deleteGalleryImg('+origIdx+')">Delete</button>' : '';
-    return '<div style="position:relative">'+editBtn+delBtn+'<img src="'+url+'" alt="" loading="lazy" style="width:100%;border-radius:10px;height:250px;object-fit:cover"></div>';
+    const canMoveL = origIdx > 0;
+    const canMoveR = d.gallery && origIdx < d.gallery.length - 1;
+    const reorderBtns = isEdit ? '<div class="reorder-btns"><button '+(canMoveL?'':'disabled')+' onclick="moveGalleryImg('+origIdx+',-1)" title="Move earlier">\u2039</button><button '+(canMoveR?'':'disabled')+' onclick="moveGalleryImg('+origIdx+',1)" title="Move later">\u203a</button></div>' : '';
+    const media = isVideoFile(u)
+      ? '<video src="'+url+'" style="width:100%;border-radius:10px;height:250px;object-fit:cover" muted loop playsinline controls></video>'
+      : '<img src="'+url+'" alt="" loading="lazy" style="width:100%;border-radius:10px;height:250px;object-fit:cover">';
+    return '<div style="position:relative">'+editBtn+delBtn+reorderBtns+media+'</div>';
   }).join('');
-  const addGalleryBtn = isEdit ? '<button class="add-stat-btn" onclick="addGalleryImg()" style="grid-column:1/-1">+ Add Photo</button>' : '';
+  const addGalleryBtn = isEdit ? '<button class="add-stat-btn" onclick="addGalleryImg()" style="grid-column:1/-1">+ Add Photo or Video</button>' : '';
   const galleryHtml = (filteredGallery.length || isEdit) ? '<div class="ov-gallery">'+galleryItemsHtml+addGalleryBtn+'</div>' : '';
 
   const editable = document.body.classList.contains('edit-mode');
@@ -982,10 +989,10 @@ function saveCurrentProject() {
   saveToDisk();
 }
 
-function pickFile(callback) {
+function pickFile(callback, accept) {
   var input = document.createElement('input');
   input.type = 'file';
-  input.accept = 'image/*';
+  input.accept = accept || 'image/*';
   input.onchange = function(e) {
     var file = e.target.files[0];
     if (!file) return;
@@ -1060,7 +1067,7 @@ function editGalleryImg(index) {
     p.detail.gallery[index] = dataUrl;
     saveCurrentProject();
     op(id);
-  });
+  }, 'image/*,video/mp4,video/webm');
 }
 
 function deleteImg(type) {
@@ -1075,6 +1082,21 @@ function deleteImg(type) {
   op(id);
 }
 
+function moveGalleryImg(index, direction) {
+  var ovEl = document.getElementById('ov');
+  var id = ovEl.dataset.projectId;
+  var p = projects.find(function(x){return x.id===id});
+  if (!p || !p.detail || !p.detail.gallery) return;
+  var gal = p.detail.gallery;
+  var targetIdx = index + direction;
+  if (targetIdx < 0 || targetIdx >= gal.length) return;
+  var tmp = gal[index];
+  gal[index] = gal[targetIdx];
+  gal[targetIdx] = tmp;
+  saveCurrentProject();
+  op(id);
+}
+
 function addGalleryImg() {
   var ovEl = document.getElementById('ov');
   var id = ovEl.dataset.projectId;
@@ -1085,7 +1107,7 @@ function addGalleryImg() {
     p.detail.gallery.push(dataUrl);
     saveCurrentProject();
     op(id);
-  });
+  }, 'image/*,video/mp4,video/webm');
 }
 
 function deleteGalleryImg(index) {
